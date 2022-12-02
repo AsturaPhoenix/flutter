@@ -287,11 +287,11 @@ class _MaterialScrollbarState extends RawScrollbarState<_MaterialScrollbar> {
         return _scrollbarTheme.thumbColor?.resolve(states) ?? hoverColor;
       }
 
-      return Color.lerp(
-        _scrollbarTheme.thumbColor?.resolve(states) ?? idleColor,
-        _scrollbarTheme.thumbColor?.resolve(states) ?? hoverColor,
-        _hoverAnimationController.value,
-      )!;
+      return Color.lerp( 
+        _scrollbarTheme.thumbColor?.resolve(const <MaterialState>{}) ?? idleColor, 
+        _scrollbarTheme.thumbColor?.resolve(const <MaterialState>{MaterialState.hovered}) ?? hoverColor, 
+        _hoverAnimationController.value, 
+      )!; 
     });
   }
 
