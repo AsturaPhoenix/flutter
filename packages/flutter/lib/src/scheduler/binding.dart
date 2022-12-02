@@ -527,8 +527,14 @@ mixin SchedulerBinding on BindingBase {
         ));
       }
       return _taskQueue.isNotEmpty;
+    } else {
+      addPostFrameCallback((Duration timeStamp) {
+        if (_taskQueue.isNotEmpty && !locked) {
+          _ensureEventLoopCallback();
+        }
+      });
+      return false;
     }
-    return false;
   }
 
   int _nextFrameCallbackId = 0; // positive
