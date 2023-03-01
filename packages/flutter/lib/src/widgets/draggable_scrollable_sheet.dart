@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -866,10 +865,6 @@ class _SheetBallisticScrollActivity extends BallisticScrollActivity {
     Simulation simulation,
   ) : super(scrollPosition, simulation, scrollPosition.context.vsync, false);
 
-  @override
-  _DraggableScrollableSheetScrollPosition get delegate =>
-      super.delegate as _DraggableScrollableSheetScrollPosition;
-
   /// The relative velocity of the inner content during the ballistic scrolling
   /// of the outer sheet is always effectively 0. This allows the scroll physics
   /// to maintain the inner extent within its bounds while the sheet size
@@ -883,13 +878,7 @@ class _SheetBallisticScrollActivity extends BallisticScrollActivity {
 
   @override
   void resetActivity() {
-    // This actually happens before the delegate is updated, so we have to
-    // do our reset in a microtask.
-    //
-    // This may have been a regression introduced long ago.
-    scheduleMicrotask(() {
-      super.delegate.goBallistic(outerVelocity);
-    });
+    super.delegate.goBallistic(outerVelocity);
   }
 
   @override
@@ -904,6 +893,7 @@ class _SheetBallisticScrollActivity extends BallisticScrollActivity {
 
   @override
   bool applyMoveTo(double value){
+    final _DraggableScrollableSheetScrollPosition delegate = this.delegate as _DraggableScrollableSheetScrollPosition;
     final _DraggableSheetExtent extent = delegate.extent;
     extent.updateSize(
         extent.pixelsToSize(value), delegate.context.notificationContext!);
